@@ -138,12 +138,11 @@ table.p tr:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
 </div>
 
 <div class="legend">
-  <div class="li"><div class="ls" style="background:var(--u1b);border-color:var(--u1c)"></div>U1 &middot; Mac Aura 101&ndash;114</div>
-  <div class="li"><div class="ls" style="background:var(--u2b);border-color:var(--u2c)"></div>U2 &middot; Mac Aura 201&ndash;210</div>
-  <div class="li"><div class="ls" style="background:var(--u3b);border-color:var(--u3c)"></div>U3 &middot; Viper 301&ndash;306</div>
-  <div class="li"><div class="ls" style="background:var(--u4b);border-color:var(--u4c)"></div>U4 &middot; Viper 401&ndash;414</div>
-  <div class="li"><div class="lsq" style="background:var(--csb);border-color:var(--csc)"></div>Color Strike M 501&ndash;504</div>
-  <div class="li"><div class="lsq" style="background:var(--u5b);border-color:var(--u5c)"></div>U5 &middot; Source 4WRD + Relay</div>
+  <div class="li"><div class="ls" style="background:var(--u1b);border-color:var(--u1c)"></div>U1 &middot; Truss 1 &middot; Mac Aura 101&ndash;114</div>
+  <div class="li"><div class="ls" style="background:var(--u3b);border-color:var(--u3c)"></div>U2 &middot; Truss 2 &middot; Viper 301&ndash;306</div>
+  <div class="li"><div class="ls" style="background:var(--u2b);border-color:var(--u2c)"></div>U3 &middot; Truss 3 &middot; Mac Aura 201&ndash;210 + Color Strike M</div>
+  <div class="li"><div class="ls" style="background:var(--u4b);border-color:var(--u4c)"></div>U4 &middot; Truss 4 &middot; Viper 401&ndash;414</div>
+  <div class="li"><div class="lsq" style="background:var(--u5b);border-color:var(--u5c)"></div>U5 &middot; Truss 5 &middot; Source 4WRD + Dimmer</div>
   <div class="ldiv"></div>
   <div class="li">&oplus; Wash &nbsp;&bull; Spot &nbsp;&#9645; Blinder &nbsp;&loz; Source</div>
 </div>
@@ -194,59 +193,59 @@ function spread(n, x0, x1) {
 
 // ── FIXTURE DATA ──
 // Y-positions chosen to prevent label/symbol overlap:
-//   US2 Mac Aura:  y=70   labels ~y=91   (21px below center)
-//   US2 Viper:     y=118  circle top y=108  (17px clearance from labels above)
-//   FOH Mac Aura:  y=548  labels ~y=574
-//   FOH Viper:     y=608  arrow top y=587  (13px clearance)
-//   Color Strike:  y=664  arrow top y=644  (10px clearance)
-//   U5:            y=720  diamond top y=708 (>10px clearance)
+//   Truss 1 Mac Aura:  y=70   labels ~y=91
+//   Truss 2 Viper:     y=118  circle top y=108  (17px clearance)
+//   Truss 3 Mac Aura:  y=548  labels ~y=574
+//   Truss 3 CS M:      y=608  arrow top y=588  (14px clearance)
+//   Truss 4 Viper:     y=664  arrow top y=643  (11px clearance)
+//   Truss 5:           y=720  diamond top y=708 (10px clearance)
 var F = [];
 
-// US2 PIPE — front row: 14x Mac Aura (U1)
+// TRUSS 1 (Upstage) — U1 — 14x Mac Aura, 25ch
 spread(14).forEach(function(x, i) {
   F.push({id:'MAuraExN '+(i+1), ch:(101+i)+'.1', type:'Mac Aura', sym:'wash', uni:1,
     addr:'1.'+String(1+i*25).padStart(3,'0'), mode:'25 CH (Extended, Colour Cal On)',
-    pos:'US2 Pipe', x:x, y:70, notes:'US2 lighting pipe. US1 (forward) is banner bar only.'});
+    pos:'Truss 1 (Upstage)', x:x, y:70, notes:''});
 });
 
-// US2 PIPE — back row: 6x Viper Profile (U3)
+// TRUSS 2 (Upstage) — U2 — 6x Mac Viper Profile, 34ch
 spread(6).forEach(function(x, i) {
   F.push({id:'MVP16E '+(i+1), ch:String(301+i), type:'Mac Viper Profile', sym:'spot', uni:3,
     addr:'2.'+String(1+i*34).padStart(3,'0'), mode:'34 CH (Extended, 16-bit)',
-    pos:'US2 Pipe', x:x, y:118, notes:'Shares US2 pipe with U1 Mac Auras. Points downstage.'});
+    pos:'Truss 2 (Upstage)', x:x, y:118, notes:''});
 });
 
-// FOH PIPE — row 1: 10x Mac Aura (U2)
+// TRUSS 3 (Downstage) — U3 — 10x Mac Aura, 25ch
 spread(10).forEach(function(x, i) {
   F.push({id:'MAuraExN '+(i+1), ch:(201+i)+'.1', type:'Mac Aura', sym:'wash', uni:2,
     addr:'3.'+String(1+i*25).padStart(3,'0'), mode:'25 CH (Extended, Colour Cal On)',
-    pos:'FOH Pipe', x:x, y:548, notes:'FOH pipe. Faces stage.'});
+    pos:'Truss 3 (Downstage)', x:x, y:548, notes:''});
 });
 
-// FOH PIPE — row 2: 14x Viper Profile (U4)
-spread(14).forEach(function(x, i) {
-  F.push({id:'MVP16E '+(i+1), ch:String(401+i), type:'Mac Viper Profile', sym:'spot', uni:4,
-    addr:'4.'+String(1+i*34).padStart(3,'0'), mode:'34 CH (Extended, 16-bit)',
-    pos:'FOH Pipe', x:x, y:608, notes:'FOH pipe. Faces stage.'});
-});
-
-// FOH PIPE — row 3: 4x Color Strike M (blue, uni=cs)
+// TRUSS 3 (Downstage) — U3 — 4x Color Strike M, 30ch
 spread(4).forEach(function(x, i) {
   F.push({id:'Color Strike M '+(i+1), ch:(501+i)+'.1', type:'Color Strike M', sym:'cyc', uni:'cs',
     addr:'3.'+String(251+i*30).padStart(3,'0'), mode:'30 CH',
-    pos:'FOH Pipe', x:x, y:664, notes:'Audience-facing blinder. Shares FOH pipe.'});
+    pos:'Truss 3 (Downstage)', x:x, y:608, notes:'Audience-facing blinder. Shares Truss 3 with Mac Auras.'});
 });
 
-// U5 — FOH Opposite: 2x Source 4WRD + 1x Relay
+// TRUSS 4 (Downstage) — U4 — 14x Mac Viper Profile, 34ch
+spread(14).forEach(function(x, i) {
+  F.push({id:'MVP16E '+(i+1), ch:String(401+i), type:'Mac Viper Profile', sym:'spot', uni:4,
+    addr:'4.'+String(1+i*34).padStart(3,'0'), mode:'34 CH (Extended, 16-bit)',
+    pos:'Truss 4 (Downstage)', x:x, y:664, notes:''});
+});
+
+// TRUSS 5 — U5 — 2x Source 4WRD + 1x Dimmer
 var u5defs = [
-  {id:'S4WRDDMX 1',ch:'1',type:'Source 4WRD',sym:'src',addr:'5.001',mode:'DMX Mode',notes:'FOH opposite spotlight. Confirm position on site.'},
-  {id:'S4WRDDMX 2',ch:'2',type:'Source 4WRD',sym:'src',addr:'5.003',mode:'DMX Mode',notes:'FOH opposite spotlight.'},
-  {id:'Relay 1',ch:'3',type:'Dimmer / Relay',sym:'src',addr:'5.005',mode:'Dimmer',notes:'Relay/dimmer. Confirm load and circuit on site.'}
+  {id:'S4WRDDMX 1',ch:'1',type:'Source 4WRD',sym:'src',addr:'5.001',mode:'DMX Mode',notes:'Confirm position on site.'},
+  {id:'S4WRDDMX 2',ch:'2',type:'Source 4WRD',sym:'src',addr:'5.003',mode:'DMX Mode',notes:''},
+  {id:'Relay 1',ch:'3',type:'Dimmer',sym:'src',addr:'5.005',mode:'Dimmer',notes:'Relay/dimmer. Confirm load and circuit on site.'}
 ];
 spread(3, 180, 640).forEach(function(x, i) {
   var d = u5defs[i];
   F.push({id:d.id, ch:d.ch, type:d.type, sym:d.sym, uni:5, addr:d.addr, mode:d.mode,
-    pos:'FOH Opposite', x:x, y:720, notes:d.notes});
+    pos:'Truss 5', x:x, y:720, notes:d.notes});
 });
 
 // ── SVG BUILD ──
@@ -272,7 +271,7 @@ el('text',{x:785,y:240,'text-anchor':'middle','font-family':'var(--fn)','font-si
 
 // US2 pipe (solid — fixtures here)
 el('rect',{x:55,y:50,width:714,height:12,fill:'#B8A878',stroke:'#7B6A40','stroke-width':'2',rx:'3'},svg);
-el('text',{x:410,y:44,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8.5',fill:'#5C3800','font-weight':'500'},svg).textContent='US2 \u2014 U1: 14\u00D7 Mac Aura + U3: 6\u00D7 Viper Profile';
+el('text',{x:410,y:44,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8.5',fill:'#5C3800','font-weight':'500'},svg).textContent='Upstage \u2014 Truss 1: 14\u00D7 Mac Aura (U1) + Truss 2: 6\u00D7 Viper (U2)';
 
 // US1 banner pipe (dashed — empty)
 el('rect',{x:55,y:180,width:714,height:10,fill:'#DDD4B4',stroke:'#A8966A','stroke-width':'1.5',rx:'3','stroke-dasharray':'8 4'},svg);
@@ -297,11 +296,11 @@ el('text',{x:410,y:474,'text-anchor':'middle','font-family':'var(--fn)','font-si
 
 // FOH Pipe (solid)
 el('line',{x1:58,y1:528,x2:762,y2:528,stroke:'#7B6A40','stroke-width':'2.5'},svg);
-el('text',{x:410,y:522,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8.5',fill:'#3A0000','font-weight':'500'},svg).textContent='FOH \u2014 U2: 10\u00D7 Aura + U4: 14\u00D7 Viper + 4\u00D7 Color Strike M';
+el('text',{x:410,y:522,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8.5',fill:'#3A0000','font-weight':'500'},svg).textContent='Downstage \u2014 Truss 3: 10\u00D7 Aura + 4\u00D7 CS M (U3) + Truss 4: 14\u00D7 Viper (U4)';
 
 // FOH Opposite zone
 el('rect',{x:50,y:746,width:720,height:10,fill:'#C8B888',stroke:'#1C1408','stroke-width':'1.5'},svg);
-el('text',{x:410,y:744,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:'#3A1A5C','letter-spacing':'0.08em'},svg).textContent='FOH OPPOSITE \u2014 BALCONY / BOX \u2014 U5';
+el('text',{x:410,y:744,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:'#3A1A5C','letter-spacing':'0.08em'},svg).textContent='TRUSS 5 \u2014 U5 \u2014 Source 4WRD + Dimmer';
 
 // ── DRAW FIXTURES ──
 var sel = null;
@@ -445,12 +444,12 @@ document.addEventListener('keydown', function(ev) {
 
 // ── PATCH TABLE ──
 var sections = [
-  {label:'US2 Pipe \u2014 Universe 1 \u2014 14\u00D7 Mac Aura (101\u2013114)', filter:function(f){return f.uni===1;}},
-  {label:'US2 Pipe \u2014 Universe 3 \u2014 6\u00D7 Mac Viper Profile (301\u2013306)', filter:function(f){return f.uni===3;}},
-  {label:'FOH Pipe \u2014 Universe 2 \u2014 10\u00D7 Mac Aura (201\u2013210)', filter:function(f){return f.uni===2;}},
-  {label:'FOH Pipe \u2014 Universe 4 \u2014 14\u00D7 Mac Viper Profile (401\u2013414)', filter:function(f){return f.uni===4;}},
-  {label:'FOH Pipe \u2014 4\u00D7 Color Strike M (501\u2013504)', filter:function(f){return f.uni==='cs';}},
-  {label:'FOH Opposite \u2014 Universe 5 \u2014 Source 4WRD + Relay', filter:function(f){return f.uni===5;}}
+  {label:'Truss 1 (Upstage) \u2014 U1 \u2014 14\u00D7 Mac Aura (101\u2013114)', filter:function(f){return f.uni===1;}},
+  {label:'Truss 2 (Upstage) \u2014 U2 \u2014 6\u00D7 Mac Viper Profile (301\u2013306)', filter:function(f){return f.uni===3;}},
+  {label:'Truss 3 (Downstage) \u2014 U3 \u2014 10\u00D7 Mac Aura (201\u2013210)', filter:function(f){return f.uni===2;}},
+  {label:'Truss 3 (Downstage) \u2014 U3 \u2014 4\u00D7 Color Strike M (501\u2013504)', filter:function(f){return f.uni==='cs';}},
+  {label:'Truss 4 (Downstage) \u2014 U4 \u2014 14\u00D7 Mac Viper Profile (401\u2013414)', filter:function(f){return f.uni===4;}},
+  {label:'Truss 5 \u2014 U5 \u2014 Source 4WRD + Dimmer', filter:function(f){return f.uni===5;}}
 ];
 
 var tbody = document.getElementById('ptb');

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Interactive lighting plot for Lansdowne Theatre — grandMA2, sACN, 5 universes, 51 fixtures. Click any fixture to inspect.">
+<title>Lansdowne Theatre — Lighting Plot</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#F2EDE0;--paper-dark:#E8DFC8;--ink:#1C1408;--ink-mid:#5C4A28;--ink-light:#9B8560;--rule:#C8B888;
+  --gold:#B8860B;--gold-bright:#D4A017;
+  --u1c:#7B3F00;--u1b:rgba(123,63,0,0.15);
+  --u2c:#8B1A1A;--u2b:rgba(139,26,26,0.15);
+  --u3c:#1A4A8B;--u3b:rgba(26,74,139,0.15);
+  --u4c:#1A6B1A;--u4b:rgba(26,107,26,0.15);
+  --u5c:#5C2A7A;--u5b:rgba(92,42,122,0.15);
+  --cs:#8B6B1A;--csb:rgba(139,107,26,0.18);
+  --fn:'DM Mono',monospace;--fb:'DM Sans',sans-serif;--fd:'Playfair Display',serif;
+}
+body{background:var(--paper-dark);color:var(--ink);font-family:var(--fb);font-size:13px}
+
+.title-block{background:var(--paper);border-bottom:2px solid var(--ink);padding:13px 22px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+.title-main{font-family:var(--fd);font-size:19px;font-weight:700;color:var(--ink)}
+.title-main em{font-style:italic;color:var(--gold)}
+.title-sub{font-family:var(--fn);font-size:9px;color:var(--ink-mid);letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
+.title-meta{font-family:var(--fn);font-size:10px;color:var(--ink-mid);text-align:right;line-height:1.9}
+.title-meta span{color:var(--ink)}
+
+.legend{background:var(--paper);border-bottom:1px solid var(--rule);padding:7px 22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.li{display:flex;align-items:center;gap:5px;font-family:var(--fn);font-size:9px;color:var(--ink-mid);letter-spacing:.03em}
+.ls{width:11px;height:11px;border-radius:50%;border:1.5px solid}
+.lsq{width:13px;height:9px;border-radius:2px;border:1.5px solid}
+.ldiv{width:1px;height:14px;background:var(--rule)}
+
+.plot-wrap{padding:16px 22px;display:flex;gap:16px;align-items:flex-start}
+.plot-area{flex:1;min-width:0}
+.orient{display:flex;justify-content:space-between;font-family:var(--fn);font-size:9px;color:var(--ink-light);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;padding:0 2px}
+
+svg#plot{width:100%;display:block;cursor:crosshair}
+.fixture-group{cursor:pointer}
+.fixture-group:hover .fb{opacity:0.7}
+.fixture-group.sel .fb{opacity:0.6}
+.fixture-group.sel .fr{stroke-width:2.5}
+
+.inspector{width:256px;flex-shrink:0;position:sticky;top:16px;background:var(--paper);border:1.5px solid var(--ink);border-radius:2px;overflow:hidden}
+.inspector.active{box-shadow:4px 4px 0 var(--ink)}
+.ih{background:var(--ink);color:var(--paper);padding:9px 13px;font-family:var(--fd);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:space-between}
+.ih .ch{font-family:var(--fn);font-size:9px;font-weight:400;color:var(--gold-bright);letter-spacing:.08em}
+.ib{padding:12px 13px}
+.ir{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;border-bottom:1px solid var(--rule);font-size:11px;gap:6px}
+.ir:last-child{border-bottom:none}
+.ilb{color:var(--ink-mid);font-size:10px;white-space:nowrap}
+.iv{font-family:var(--fn);font-size:10px;color:var(--ink);text-align:right}
+.iv.addr{color:var(--gold)}
+.itag{display:inline-block;padding:1px 6px;border-radius:2px;font-family:var(--fn);font-size:9px;font-weight:500;letter-spacing:.04em;border:1px solid}
+.iempty{text-align:center;padding:22px 13px;color:var(--ink-light);font-family:var(--fd);font-style:italic;font-size:12px;line-height:1.7}
+.inote{margin-top:8px;padding:7px 9px;background:var(--paper-dark);border-left:2px solid var(--gold);font-size:10px;color:var(--ink-mid);line-height:1.6}
+.ipreview{margin:8px 0 0;height:40px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-family:var(--fn);font-size:9px;letter-spacing:.08em;border:1px solid var(--rule);text-transform:uppercase}
+
+.patch-section{margin:0 22px 28px;border:1px solid var(--rule);border-radius:2px;overflow:hidden}
+.pt{background:var(--ink);color:var(--paper);padding:7px 13px;font-family:var(--fd);font-size:12px;font-weight:700;letter-spacing:.02em}
+table.p{width:100%;border-collapse:collapse;font-size:11px;background:var(--paper)}
+table.p th{font-family:var(--fn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mid);padding:5px 11px;text-align:left;border-bottom:1.5px solid var(--rule);background:var(--paper-dark)}
+table.p td{padding:4px 11px;border-bottom:1px solid var(--rule);vertical-align:top}
+table.p tr:last-child td{border-bottom:none}
+table.p tr:hover td{background:var(--paper-dark);cursor:pointer}
+.m{font-family:var(--fn);font-size:10px}
+.mt{color:var(--ink-mid);font-size:10px}
+.sec-row td{background:var(--paper-dark)!important;font-family:var(--fn);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);padding:3px 11px;border-top:1.5px solid var(--rule)}
+
+@media (max-width: 768px) {
+  .plot-wrap { flex-direction: column; }
+  .inspector { width: 100%; position: static; }
+  .title-block { flex-direction: column; align-items: flex-start; }
+  .title-meta { text-align: left; }
+}
+</style>
+</head>
+<body>
+
+<div class="title-block">
+  <div>
+    <div class="title-main">Lansdowne Theatre &mdash; <em>Lighting Plot</em></div>
+    <div class="title-sub">From verified patch sheet &middot; grandMA2 &middot; sACN &middot; 5 Universes &middot; 31 N. Lansdowne Ave, Lansdowne PA 19050</div>
+  </div>
+  <div class="title-meta">
+    Console <span>grandMA2</span> &nbsp;&middot;&nbsp; Protocol <span>sACN</span><br>
+    Total fixtures <span>51</span> &nbsp;&middot;&nbsp; Universes <span>1&ndash;5</span><br>
+    Click any fixture to inspect
+  </div>
+</div>
+
+<div class="legend">
+  <div class="li"><div class="ls" style="background:var(--u1b);border-color:var(--u1c)"></div>U1 &middot; Mac Aura (14)</div>
+  <div class="li"><div class="ls" style="background:var(--u2b);border-color:var(--u2c)"></div><svg style="display:inline;margin-right:2px" width="11" height="11" viewBox="0 0 11 11"><circle cx="5.5" cy="5.5" r="4.5" fill="rgba(139,26,26,0.15)" stroke="#8B1A1A" stroke-width="1.5"/><circle cx="5.5" cy="5.5" r="2" fill="#8B1A1A"/></svg>U2 &middot; Viper Profile (6)</div>
+  <div class="li"><div class="ls" style="background:var(--u3b);border-color:var(--u3c)"></div>U3 &middot; Mac Aura (10) + Color Strike M (4)</div>
+  <div class="li"><div class="ls" style="background:var(--u4b);border-color:var(--u4c)"></div><svg style="display:inline;margin-right:2px" width="11" height="11" viewBox="0 0 11 11"><circle cx="5.5" cy="5.5" r="4.5" fill="rgba(26,107,26,0.15)" stroke="#1A6B1A" stroke-width="1.5"/><circle cx="5.5" cy="5.5" r="2" fill="#1A6B1A"/></svg>U4 &middot; Viper Profile (14)</div>
+  <div class="li"><div class="lsq" style="background:var(--u5b);border-color:var(--u5c)"></div>U5 &middot; Source 4WRD + Dimmer (3)</div>
+  <div class="ldiv"></div>
+  <div class="li"><svg width="11" height="11" viewBox="0 0 11 11"><circle cx="5.5" cy="5.5" r="4.5" fill="none" stroke="#5C4A28" stroke-width="1.2"/><line x1="1.5" y1="5.5" x2="9.5" y2="5.5" stroke="#5C4A28" stroke-width=".7"/><line x1="5.5" y1="1.5" x2="5.5" y2="9.5" stroke="#5C4A28" stroke-width=".7"/></svg>Wash</div>
+  <div class="li"><svg width="11" height="11" viewBox="0 0 11 11"><circle cx="5.5" cy="5.5" r="4.5" fill="none" stroke="#5C4A28" stroke-width="1.2"/><circle cx="5.5" cy="5.5" r="1.8" fill="#5C4A28"/></svg>Spot/Profile</div>
+  <div class="li"><svg width="13" height="9" viewBox="0 0 13 9"><rect x="0.75" y="0.75" width="11.5" height="7.5" fill="none" stroke="#5C4A28" stroke-width="1.2" rx="1.5"/><line x1="6.5" y1="0.75" x2="6.5" y2="8.25" stroke="#5C4A28" stroke-width=".7"/></svg>Cyc / Strip</div>
+  <div class="li"><svg width="13" height="9" viewBox="0 0 13 9"><rect x="0.75" y="0.75" width="11.5" height="7.5" fill="none" stroke="#5C4A28" stroke-width="1.2" rx="1.5"/></svg>Source / Dimmer</div>
+</div>
+
+<div class="plot-wrap">
+  <div class="plot-area">
+    <div class="orient"><span>&larr; Stage Right</span><span>&uarr; Upstage</span><span>Stage Left &rarr;</span></div>
+    <svg id="plot" viewBox="0 0 820 560" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="orient" style="margin-top:3px"><span></span><span>&darr; Downstage &middot; Audience</span><span></span></div>
+  </div>
+
+  <div class="inspector" id="inspector">
+    <div class="ih"><span>Inspector</span><span class="ch" id="ich">&mdash;</span></div>
+    <div id="ib"><div class="iempty">Click any fixture on the plot or a row in the patch table to inspect.</div></div>
+  </div>
+</div>
+
+<div class="patch-section">
+  <div class="pt">Full Patch &mdash; Verified from Master Patch Sheet</div>
+  <table class="p">
+    <thead><tr><th>CH</th><th>Fixture Name</th><th>Type</th><th>Uni</th><th>DMX Addr</th><th>Mode</th><th>Truss</th></tr></thead>
+    <tbody id="ptb"></tbody>
+  </table>
+</div>
+
+<script>
+const UC = {
+  1:{c:'#7B3F00',b:'rgba(123,63,0,0.16)',t:'#5C2A00',lbl:'U1'},
+  2:{c:'#8B1A1A',b:'rgba(139,26,26,0.16)',t:'#6B0A0A',lbl:'U2'},
+  3:{c:'#1A4A8B',b:'rgba(26,74,139,0.16)',t:'#0D2A5C',lbl:'U3'},
+  4:{c:'#1A6B1A',b:'rgba(26,107,26,0.16)',t:'#0A4A0A',lbl:'U4'},
+  5:{c:'#5C2A7A',b:'rgba(92,42,122,0.16)',t:'#3A1A5C',lbl:'U5'},
+};
+
+// Escape HTML entities to prevent DOM injection
+function esc(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+// --- REAL FIXTURE DATA from patch sheet ---
+const F = [];
+
+// U1 - Upstage 1 - 14x Mac Aura, 25ch, addresses 1.001 stepping 25
+const u1pos = [75,115,155,195,240,280,320,365,405,450,495,540,585,625];
+for (let i=0;i<14;i++) {
+  F.push({ id:'MAuraExN '+(i+1), ch:(101+i)+'.1', type:'Mac Aura', sym:'wash', uni:1,
+    addr:'1.'+String(1+i*25).padStart(3,'0'), mode:'25 CH (Extended, Colour Cal On)',
+    truss:'Upstage 1', x:u1pos[i], y:72, notes:'' });
+}
+
+// U2 - Upstage 2 - 6x Mac Viper Profile, 34ch
+const u2pos = [130,218,310,400,492,580];
+for (let i=0;i<6;i++) {
+  F.push({ id:'MVP16E '+(i+1), ch:String(301+i), type:'Mac Viper Profile', sym:'spot', uni:2,
+    addr:'2.'+String(1+i*34).padStart(3,'0'), mode:'34 CH (Extended, 16-bit)',
+    truss:'Upstage 2', x:u2pos[i], y:156, notes:'' });
+}
+
+// U3 - Downstage 3 - 10x Mac Aura + 4x Color Strike M
+const u3apos = [90,130,173,216,260,305,350,395,438,482];
+for (let i=0;i<10;i++) {
+  F.push({ id:'MAuraExN '+(i+1), ch:(201+i)+'.1', type:'Mac Aura', sym:'wash', uni:3,
+    addr:'3.'+String(1+i*25).padStart(3,'0'), mode:'25 CH (Extended, Colour Cal On)',
+    truss:'Downstage 3', x:u3apos[i], y:322, notes:'' });
+}
+const cspos = [535,574,614,654];
+for (let i=0;i<4;i++) {
+  F.push({ id:'Color Strike M '+(i+1), ch:(501+i)+'.1', type:'Color Strike M', sym:'cyc', uni:3,
+    addr:'3.'+String(251+i*30).padStart(3,'0'), mode:'30 CH',
+    truss:'Downstage 3', x:cspos[i], y:322,
+    notes:'Cyc / footlight position. 30ch mode.' });
+}
+
+// U4 - Downstage 4 - 14x Mac Viper Profile, 34ch
+const u4pos = [75,115,157,200,243,286,330,374,418,461,505,549,592,634];
+for (let i=0;i<14;i++) {
+  F.push({ id:'MVP16E '+(i+1), ch:String(401+i), type:'Mac Viper Profile', sym:'spot', uni:4,
+    addr:'4.'+String(1+i*34).padStart(3,'0'), mode:'34 CH (Extended, 16-bit)',
+    truss:'Downstage 4', x:u4pos[i], y:430, notes:'' });
+}
+
+// U5 - 2x Source 4WRD + 1x Dimmer (relay)
+F.push({ id:'S4WRDDMX 1', ch:'1', type:'Source 4WRD', sym:'src', uni:5,
+  addr:'5.001', mode:'DMX Mode', truss:'Universe 5', x:280, y:500,
+  notes:'Source 4WRD. Confirm position on site.' });
+F.push({ id:'S4WRDDMX 2', ch:'2', type:'Source 4WRD', sym:'src', uni:5,
+  addr:'5.003', mode:'DMX Mode', truss:'Universe 5', x:390, y:500,
+  notes:'Source 4WRD.' });
+F.push({ id:'Relay 1', ch:'3', type:'Dimmer', sym:'src', uni:5,
+  addr:'5.005', mode:'Dimmer', truss:'Universe 5', x:500, y:500,
+  notes:'Relay / dimmer. Confirm load and circuit on site.' });
+
+// --- SVG BUILD ---
+const svg = document.getElementById('plot');
+const ns = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent) {
+  const node = document.createElementNS(ns, tag);
+  for (const [k,v] of Object.entries(attrs)) node.setAttribute(k,v);
+  if (parent) parent.appendChild(node);
+  return node;
+}
+
+// Stage floor
+el('rect',{x:50,y:38,width:720,height:490,fill:'#F5F0E0',stroke:'#1C1408','stroke-width':'2',rx:'2'},svg);
+// Grid
+for (let x=100;x<760;x+=80) el('line',{x1:x,y1:38,x2:x,y2:528,stroke:'#DDD4B8','stroke-width':'0.5','stroke-dasharray':'4 7'},svg);
+for (let y=80;y<528;y+=80) el('line',{x1:50,y1:y,x2:770,y2:y,stroke:'#DDD4B8','stroke-width':'0.5','stroke-dasharray':'4 7'},svg);
+
+// Proscenium
+el('rect',{x:50,y:528,width:720,height:32,fill:'#CEC6A8',stroke:'#1C1408','stroke-width':'2'},svg);
+const prosc = el('text',{x:410,y:549,'text-anchor':'middle','font-family':'var(--fn)','font-size':'10',fill:'#5C4A28','letter-spacing':'0.1em'},svg);
+prosc.textContent = 'PROSCENIUM \u00B7 AUDIENCE';
+
+// Walls
+el('rect',{x:20,y:38,width:30,height:490,fill:'#C8B888',stroke:'#8B7A50','stroke-width':'1.5'},svg);
+el('rect',{x:770,y:38,width:30,height:490,fill:'#C8B888',stroke:'#8B7A50','stroke-width':'1.5'},svg);
+const srText = el('text',{x:35,y:283,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:'#5C4A28','letter-spacing':'0.07em',transform:'rotate(-90,35,283)'},svg);
+srText.textContent = 'STAGE RIGHT (SR)';
+const slText = el('text',{x:785,y:283,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:'#5C4A28','letter-spacing':'0.07em',transform:'rotate(90,785,283)'},svg);
+slText.textContent = 'STAGE LEFT (SL)';
+
+// Trusses
+const trusses = [
+  {y:56,x1:55,x2:738,lbl:'Upstage 1 \u2014 U1 \u2014 14\u00D7 Mac Aura'},
+  {y:140,x1:70,x2:660,lbl:'Upstage 2 \u2014 U2 \u2014 6\u00D7 Mac Viper Profile'},
+  {y:306,x1:60,x2:720,lbl:'Downstage 3 \u2014 U3 \u2014 10\u00D7 Mac Aura + 4\u00D7 Color Strike M'},
+  {y:414,x1:55,x2:738,lbl:'Downstage 4 \u2014 U4 \u2014 14\u00D7 Mac Viper Profile'},
+];
+trusses.forEach(function(t) {
+  el('rect',{x:t.x1,y:t.y-5,width:t.x2-t.x1,height:10,fill:'#C8B888',stroke:'#8B7A50','stroke-width':'1.5',rx:'3'},svg);
+  const label = el('text',{x:(t.x1+t.x2)/2,y:t.y+20,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8.5',fill:'#7B6040','letter-spacing':'0.04em'},svg);
+  label.textContent = t.lbl;
+});
+
+// U5 floor line
+el('line',{x1:210,y1:492,x2:600,y2:492,stroke:'#A07CC8','stroke-width':'1','stroke-dasharray':'6 4'},svg);
+const u5Label = el('text',{x:405,y:489,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:'#7B5C9C','letter-spacing':'0.04em'},svg);
+u5Label.textContent = 'U5 \u2014 Source 4WRD \u00B7 Relay';
+
+let sel = null;
+
+function drawFixture(f, idx) {
+  const u = UC[f.uni];
+  const g = el('g',{'class':'fixture-group'},svg);
+  const r = 13;
+
+  if (f.sym === 'wash') {
+    el('circle',{cx:f.x,cy:f.y,r:r,fill:u.b,stroke:u.c,'stroke-width':'1.5','class':'fb'},g);
+    el('line',{x1:f.x-9,y1:f.y,x2:f.x+9,y2:f.y,stroke:u.c,'stroke-width':'0.8'},g);
+    el('line',{x1:f.x,y1:f.y-9,x2:f.x,y2:f.y+9,stroke:u.c,'stroke-width':'0.8'},g);
+    el('circle',{cx:f.x,cy:f.y,r:r,fill:'none',stroke:u.c,'stroke-width':'1.5','class':'fr'},g);
+  } else if (f.sym === 'spot') {
+    el('circle',{cx:f.x,cy:f.y,r:12,fill:u.b,stroke:u.c,'stroke-width':'1.5','class':'fb'},g);
+    el('circle',{cx:f.x,cy:f.y,r:4,fill:u.c,'class':'fb'},g);
+    el('circle',{cx:f.x,cy:f.y,r:12,fill:'none',stroke:u.c,'stroke-width':'1.5','class':'fr'},g);
+  } else if (f.sym === 'cyc') {
+    el('rect',{x:f.x-13,y:f.y-8,width:26,height:16,fill:u.b,stroke:u.c,'stroke-width':'1.5',rx:'2','class':'fb'},g);
+    el('line',{x1:f.x,y1:f.y-8,x2:f.x,y2:f.y+8,stroke:u.c,'stroke-width':'0.8'},g);
+    el('rect',{x:f.x-13,y:f.y-8,width:26,height:16,fill:'none',stroke:u.c,'stroke-width':'1.5',rx:'2','class':'fr'},g);
+  } else {
+    el('rect',{x:f.x-15,y:f.y-9,width:30,height:18,fill:u.b,stroke:u.c,'stroke-width':'1.5',rx:'2','class':'fb'},g);
+    el('rect',{x:f.x-15,y:f.y-9,width:30,height:18,fill:'none',stroke:u.c,'stroke-width':'1.5',rx:'2','class':'fr'},g);
+  }
+
+  // CH label
+  const chLabel = el('text',{x:f.x,y:f.y+(f.sym==='cyc'||f.sym==='src'?21:23),'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:u.c,'font-weight':'500'},g);
+  chLabel.textContent = f.ch;
+
+  g.addEventListener('click', function(ev) { ev.stopPropagation(); setSelected(g, idx); inspect(f); });
+  return g;
+}
+
+const groups = F.map(function(f, i) { return drawFixture(f, i); });
+
+function setSelected(g, idx) {
+  if (sel) sel.classList.remove('sel');
+  g.classList.add('sel');
+  sel = g;
+  document.getElementById('inspector').classList.add('active');
+}
+
+function inspect(f) {
+  const u = UC[f.uni];
+  const symLabels = {wash:'Wash / Flood', spot:'Spot / Profile', cyc:'Cyc / Strip', src:'Source / Dimmer'};
+  const symLabel = symLabels[f.sym] || f.sym;
+
+  document.getElementById('ich').textContent = 'CH ' + f.ch;
+
+  var container = document.getElementById('ib');
+  container.textContent = '';
+
+  var ib = document.createElement('div');
+  ib.className = 'ib';
+
+  // Preview bar
+  var preview = document.createElement('div');
+  preview.className = 'ipreview';
+  preview.style.background = u.b;
+  preview.style.borderColor = u.c;
+  preview.style.color = u.t;
+  preview.textContent = symLabel + ' \u00B7 ' + u.lbl;
+  ib.appendChild(preview);
+
+  // Row helper
+  function addRow(label, value, cls) {
+    var row = document.createElement('div');
+    row.className = 'ir';
+    var lb = document.createElement('span');
+    lb.className = 'ilb';
+    lb.textContent = label;
+    var iv = document.createElement('span');
+    iv.className = 'iv' + (cls ? ' ' + cls : '');
+    iv.textContent = value;
+    row.appendChild(lb);
+    row.appendChild(iv);
+    ib.appendChild(row);
+  }
+
+  // Universe tag row
+  function addUniRow(label, u) {
+    var row = document.createElement('div');
+    row.className = 'ir';
+    var lb = document.createElement('span');
+    lb.className = 'ilb';
+    lb.textContent = label;
+    var iv = document.createElement('span');
+    iv.className = 'iv';
+    var tag = document.createElement('span');
+    tag.className = 'itag';
+    tag.style.background = u.b;
+    tag.style.borderColor = u.c;
+    tag.style.color = u.t;
+    tag.textContent = u.lbl;
+    iv.appendChild(tag);
+    row.appendChild(lb);
+    row.appendChild(iv);
+    ib.appendChild(row);
+  }
+
+  addRow('Name', f.id);
+  addRow('Type', f.type);
+  addRow('Channel', f.ch);
+  addUniRow('Universe', u);
+  addRow('DMX Address', f.addr, 'addr');
+  addRow('Mode', f.mode);
+  addRow('Truss', f.truss);
+
+  if (f.notes) {
+    var note = document.createElement('div');
+    note.className = 'inote';
+    note.textContent = f.notes;
+    ib.appendChild(note);
+  }
+
+  container.appendChild(ib);
+}
+
+svg.addEventListener('click', function() {
+  if (sel) { sel.classList.remove('sel'); sel = null; }
+  document.getElementById('inspector').classList.remove('active');
+  document.getElementById('ich').textContent = '\u2014';
+  var ibEl = document.getElementById('ib');
+  ibEl.textContent = '';
+  var empty = document.createElement('div');
+  empty.className = 'iempty';
+  empty.textContent = 'Click any fixture on the plot or a row in the patch table to inspect.';
+  ibEl.appendChild(empty);
+});
+
+// --- PATCH TABLE ---
+const sections = [
+  {label:'Upstage 1 \u2014 Universe 1 \u2014 Mac Aura', filter: function(f){return f.uni===1;}},
+  {label:'Upstage 2 \u2014 Universe 2 \u2014 Mac Viper Profile', filter: function(f){return f.uni===2;}},
+  {label:'Downstage 3 \u2014 Universe 3 \u2014 Mac Aura + Color Strike M', filter: function(f){return f.uni===3;}},
+  {label:'Downstage 4 \u2014 Universe 4 \u2014 Mac Viper Profile', filter: function(f){return f.uni===4;}},
+  {label:'Universe 5 \u2014 Source 4WRD + Relay', filter: function(f){return f.uni===5;}},
+];
+
+var tbody = document.getElementById('ptb');
+
+sections.forEach(function(sec) {
+  var hdr = document.createElement('tr');
+  hdr.className = 'sec-row';
+  var hdrTd = document.createElement('td');
+  hdrTd.setAttribute('colspan', '7');
+  hdrTd.textContent = sec.label;
+  hdr.appendChild(hdrTd);
+  tbody.appendChild(hdr);
+
+  F.filter(sec.filter).forEach(function(f) {
+    var u = UC[f.uni];
+    var globalIdx = F.indexOf(f);
+    var tr = document.createElement('tr');
+
+    // CH
+    var td1 = document.createElement('td');
+    td1.className = 'm';
+    td1.textContent = f.ch;
+    tr.appendChild(td1);
+
+    // Name
+    var td2 = document.createElement('td');
+    td2.className = 'm';
+    td2.textContent = f.id;
+    tr.appendChild(td2);
+
+    // Type
+    var td3 = document.createElement('td');
+    td3.textContent = f.type;
+    tr.appendChild(td3);
+
+    // Universe tag
+    var td4 = document.createElement('td');
+    var tag = document.createElement('span');
+    tag.className = 'itag';
+    tag.style.background = u.b;
+    tag.style.borderColor = u.c;
+    tag.style.color = u.t;
+    tag.style.fontSize = '9px';
+    tag.style.padding = '1px 5px';
+    tag.textContent = u.lbl;
+    td4.appendChild(tag);
+    tr.appendChild(td4);
+
+    // DMX Address
+    var td5 = document.createElement('td');
+    td5.className = 'm';
+    td5.style.color = u.c;
+    td5.textContent = f.addr;
+    tr.appendChild(td5);
+
+    // Mode
+    var td6 = document.createElement('td');
+    td6.className = 'mt';
+    td6.textContent = f.mode;
+    tr.appendChild(td6);
+
+    // Truss
+    var td7 = document.createElement('td');
+    td7.className = 'mt';
+    td7.textContent = f.truss;
+    tr.appendChild(td7);
+
+    tr.addEventListener('click', function() {
+      setSelected(groups[globalIdx], globalIdx);
+      inspect(f);
+      document.getElementById('plot').scrollIntoView({behavior:'smooth', block:'start'});
+    });
+
+    tbody.appendChild(tr);
+  });
+});
+</script>
+</body>
+</html>

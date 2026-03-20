@@ -174,32 +174,44 @@ var F=[];
 spread(14).forEach(function(x,i){
   F.push({id:'MAuraExN '+(i+1),ch:(101+i)+'.1',type:'Mac Aura',sym:'wash',uni:1,
     addr:'1.'+String(1+i*25).padStart(3,'0'),mode:'25 CH (Extended, Colour Cal On)',
-    pos:'US2 Pipe',x:x,y:64,notes:''});
+    pos:'US2 Pipe',x:x,y:164,notes:''});
 });
 
 // US2 — U2 — 6× Viper Profile — addr 2.xxx
 spread(6).forEach(function(x,i){
   F.push({id:'MVP16E '+(i+1),ch:String(301+i),type:'Mac Viper Profile',sym:'spot',uni:2,
     addr:'2.'+String(1+i*34).padStart(3,'0'),mode:'34 CH (Extended, 16-bit)',
-    pos:'US2 Pipe',x:x,y:102,notes:''});
+    pos:'US2 Pipe',x:x,y:202,notes:''});
 });
 
+// FOH shared layout slots:
+// 201, 401, 402, 202, 403, 404, 203, 405, 406, 204, 407, 408, 205, 409, 410, 206, 411, 412, 207, 413, 414, 208, 209, 210
+var fohSlots=spread(24,62,758);
+var fohWashIdx=[0,3,6,9,12,15,18,21,22,23];
+var fohViperIdx=[1,2,4,5,7,8,10,11,13,14,16,17,19,20];
+var fohCsX=[
+  Math.round((fohSlots[8]+fohSlots[9])/2),
+  Math.round((fohSlots[10]+fohSlots[11])/2),
+  Math.round((fohSlots[12]+fohSlots[13])/2),
+  Math.round((fohSlots[14]+fohSlots[15])/2)
+];
+
 // FOH — U3 — 10× Mac Aura — addr 3.xxx
-spread(10).forEach(function(x,i){
+fohWashIdx.forEach(function(slotIdx,i){
   F.push({id:'MAuraExN '+(i+1),ch:(201+i)+'.1',type:'Mac Aura',sym:'wash',uni:3,
     addr:'3.'+String(1+i*25).padStart(3,'0'),mode:'25 CH (Extended, Colour Cal On)',
-    pos:'FOH Pipe',x:x,y:536,notes:''});
+    pos:'FOH Pipe',x:fohSlots[slotIdx],y:536,notes:''});
 });
 
 // FOH — U4 — 14× Viper Profile — addr 4.xxx
-spread(14).forEach(function(x,i){
+fohViperIdx.forEach(function(slotIdx,i){
   F.push({id:'MVP16E '+(i+1),ch:String(401+i),type:'Mac Viper Profile',sym:'spot',uni:4,
     addr:'4.'+String(1+i*34).padStart(3,'0'),mode:'34 CH (Extended, 16-bit)',
-    pos:'FOH Pipe',x:x,y:586,notes:''});
+    pos:'FOH Pipe',x:fohSlots[slotIdx],y:586,notes:''});
 });
 
-// FOH — U3 — 4× Color Strike M — addr 3.xxx (shares U3 with Mac Auras)
-spread(4).forEach(function(x,i){
+// FOH — U3 — 4× Color Strike M — addr 3.xxx (centered within the 403–412 cluster)
+fohCsX.forEach(function(x,i){
   F.push({id:'Color Strike M '+(i+1),ch:(501+i)+'.1',type:'Color Strike M',sym:'cyc',uni:3,
     addr:'3.'+String(251+i*30).padStart(3,'0'),mode:'30 CH',
     pos:'FOH Pipe',x:x,y:638,notes:'Audience-facing blinder.'});
@@ -232,13 +244,13 @@ e('rect',{x:770,y:38,width:30,height:410,fill:'#C8B888',stroke:'#8B7A50','stroke
 e('text',{x:35,y:243,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:'#5C4A28',transform:'rotate(-90,35,243)'},svg).textContent='STAGE RIGHT (SR)';
 e('text',{x:785,y:243,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:'#5C4A28',transform:'rotate(90,785,243)'},svg).textContent='STAGE LEFT (SL)';
 
-// US2 pipe (solid)
-e('rect',{x:55,y:48,width:714,height:12,fill:'#B8A878',stroke:'#7B6A40','stroke-width':'2',rx:'3'},svg);
-e('text',{x:410,y:42,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8.5',fill:'#5C3800','font-weight':'500'},svg).textContent='US2 \u2014 U1: 14\u00D7 Mac Aura (101\u2013114) + U2: 6\u00D7 Viper Profile (301\u2013306)';
+// US1 banner pipe (dashed, empty non-electric, upstage of electrics)
+e('rect',{x:55,y:48,width:714,height:10,fill:'#DDD4B4',stroke:'#A8966A','stroke-width':'1.5',rx:'3','stroke-dasharray':'8 4'},svg);
+e('text',{x:410,y:42,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:'#9B8560'},svg).textContent='US1 \u2014 Banner Pipe \u2014 Empty / Non-Electric';
 
-// US1 banner pipe (dashed, empty non-electric)
-e('rect',{x:55,y:148,width:714,height:10,fill:'#DDD4B4',stroke:'#A8966A','stroke-width':'1.5',rx:'3','stroke-dasharray':'8 4'},svg);
-e('text',{x:410,y:143,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:'#9B8560'},svg).textContent='US1 \u2014 Banner Pipe \u2014 Empty / Non-Electric';
+// US2 pipe (solid electrics, midstage)
+e('rect',{x:55,y:148,width:714,height:12,fill:'#B8A878',stroke:'#7B6A40','stroke-width':'2',rx:'3'},svg);
+e('text',{x:410,y:142,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8.5',fill:'#5C3800','font-weight':'500'},svg).textContent='US2 \u2014 U1: 14\u00D7 Mac Aura (101\u2013114) + U2: 6\u00D7 Viper Profile (301\u2013306)';
 
 // DS3 empty non-electric
 e('rect',{x:55,y:238,width:714,height:10,fill:'#DDD4B4',stroke:'#A8966A','stroke-width':'1.2',rx:'3','stroke-dasharray':'8 4'},svg);

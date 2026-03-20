@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Lansdowne Theatre Lighting Plot</title>
+  <desc id="desc">Share card for the Lansdowne Theatre lighting plot showing two electrified trusses, five universes, and fifty-one fixtures.</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#F2EDE0"/>
+      <stop offset="100%" stop-color="#E8DFC8"/>
+    </linearGradient>
+    <style>
+      .mono { font-family: "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace; }
+      .sans { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+      .serif { font-family: Georgia, "Times New Roman", serif; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#paper)"/>
+  <rect x="40" y="40" width="1120" height="550" rx="8" fill="#F7F2E6" stroke="#1C1408" stroke-width="3"/>
+  <rect x="40" y="40" width="1120" height="72" fill="#1C1408"/>
+  <text x="72" y="86" class="serif" font-size="34" font-weight="700" fill="#F2EDE0">Lansdowne Theatre</text>
+  <text x="420" y="86" class="serif" font-size="34" font-style="italic" font-weight="700" fill="#D4A017">Lighting Plot</text>
+  <text x="72" y="138" class="mono" font-size="14" letter-spacing="2" fill="#5C4A28">VERIFIED PATCH  ·  GRANDMA2  ·  sACN  ·  2 ELECTRIFIED TRUSSES</text>
+
+  <rect x="72" y="182" width="760" height="300" fill="#F5F0E0" stroke="#1C1408" stroke-width="2"/>
+  <rect x="95" y="198" width="714" height="12" rx="3" fill="#B8A878" stroke="#7B6A40" stroke-width="2"/>
+  <text x="452" y="191" text-anchor="middle" class="mono" font-size="12" fill="#5C3800">US2 — U1: 14× Mac Aura + U2: 6× Viper Profile</text>
+  <rect x="95" y="278" width="714" height="9" rx="3" fill="#DDD4B4" stroke="#A8966A" stroke-width="1.4" stroke-dasharray="8 4"/>
+  <text x="452" y="271" text-anchor="middle" class="mono" font-size="11" fill="#9B8560">US1 — Empty / Non-Electric</text>
+  <rect x="95" y="348" width="714" height="9" rx="3" fill="#DDD4B4" stroke="#A8966A" stroke-width="1.2" stroke-dasharray="8 4"/>
+  <text x="452" y="341" text-anchor="middle" class="mono" font-size="11" fill="#9B8560">DS3 / DS4 — Empty / Non-Electric</text>
+  <line x1="98" y1="405" x2="806" y2="405" stroke="#7B6A40" stroke-width="3"/>
+  <text x="452" y="397" text-anchor="middle" class="mono" font-size="12" fill="#3A0000">FOH — U3: 10× Mac Aura + 4× Color Strike M · U4: 14× Viper</text>
+  <rect x="95" y="454" width="714" height="10" fill="#C8B888" stroke="#1C1408" stroke-width="1.5"/>
+  <text x="452" y="478" text-anchor="middle" class="mono" font-size="11" fill="#3A1A5C">U5 ACCESSORY POSITION — FOH OPPOSITE / BALCONY BOX</text>
+
+  <g transform="translate(875 176)">
+    <rect width="240" height="316" rx="8" fill="#F2EDE0" stroke="#1C1408" stroke-width="2"/>
+    <text x="24" y="42" class="mono" font-size="13" letter-spacing="1.5" fill="#5C4A28">PATCH SUMMARY</text>
+    <text x="24" y="84" class="serif" font-size="22" font-weight="700" fill="#1C1408">5 Universes</text>
+    <text x="24" y="122" class="serif" font-size="22" font-weight="700" fill="#1C1408">51 Fixtures</text>
+    <text x="24" y="160" class="serif" font-size="22" font-weight="700" fill="#1C1408">2 Trusses with Electrics</text>
+    <text x="24" y="213" class="mono" font-size="12" fill="#5C4A28">U1 101–114  ·  14× Mac Aura</text>
+    <text x="24" y="239" class="mono" font-size="12" fill="#5C4A28">U2 301–306  ·  6× Viper Profile</text>
+    <text x="24" y="265" class="mono" font-size="12" fill="#5C4A28">U3 201–210 + 501–504</text>
+    <text x="24" y="291" class="mono" font-size="12" fill="#5C4A28">U4 401–414  ·  14× Viper</text>
+    <text x="24" y="317" class="mono" font-size="12" fill="#5C4A28">U5 1–3  ·  Source 4WRD + Dimmer</text>
+  </g>
+
+  <g transform="translate(108 228)">
+    <g fill="#7B3F00" stroke="#7B3F00"><circle cx="0" cy="0" r="12" fill="rgba(123,63,0,0.16)"/><circle cx="64" cy="0" r="12" fill="rgba(123,63,0,0.16)"/><circle cx="128" cy="0" r="12" fill="rgba(123,63,0,0.16)"/></g>
+    <g transform="translate(24 44)" fill="#8B1A1A" stroke="#8B1A1A"><circle cx="0" cy="0" r="12" fill="rgba(139,26,26,0.16)"/><circle cx="128" cy="0" r="12" fill="rgba(139,26,26,0.16)"/></g>
+    <g transform="translate(0 200)" fill="#1A4A8B" stroke="#1A4A8B"><circle cx="0" cy="0" r="12" fill="rgba(26,74,139,0.16)"/><circle cx="96" cy="0" r="12" fill="rgba(26,74,139,0.16)"/></g>
+    <g transform="translate(200 200)" fill="#1A6B1A" stroke="#1A6B1A"><circle cx="0" cy="0" r="12" fill="rgba(26,107,26,0.16)"/><circle cx="64" cy="0" r="12" fill="rgba(26,107,26,0.16)"/></g>
+  </g>
+
+  <text x="72" y="552" class="mono" font-size="13" letter-spacing="1.5" fill="#5C4A28">Interactive SVG plot with patch table and inspector</text>
+</svg>

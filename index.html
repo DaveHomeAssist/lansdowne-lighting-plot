@@ -7,6 +7,15 @@
 <meta property="og:title" content="Lansdowne Theatre — Lighting Plot">
 <meta property="og:description" content="Interactive SVG lighting plot with inspector. grandMA2, sACN, 5 universes, 51 fixtures.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://davehomeassist.github.io/lansdowne-lighting-plot/">
+<meta property="og:image" content="https://davehomeassist.github.io/lansdowne-lighting-plot/lansdowne-theatre-logo-official.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="2332">
+<meta property="og:image:height" content="624">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Lansdowne Theatre — Lighting Plot">
+<meta name="twitter:description" content="Interactive SVG lighting plot with inspector. grandMA2, sACN, 5 universes, 51 fixtures.">
+<meta name="twitter:image" content="https://davehomeassist.github.io/lansdowne-lighting-plot/lansdowne-theatre-logo-official.png">
 <meta name="theme-color" content="#1C1408">
 <title>Lansdowne Theatre — Lighting Plot</title>
 <style>
@@ -29,6 +38,8 @@ body{background:var(--paper-dark);color:var(--ink);font-family:var(--fb);font-si
 .title-sub{font-family:var(--fn);font-size:9px;color:var(--ink-mid);letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
 .title-meta{font-family:var(--fn);font-size:10px;color:var(--ink-mid);text-align:right;line-height:1.9}
 .title-meta span{color:var(--ink)}
+.context-note{background:var(--paper);border-bottom:1px solid var(--rule);padding:8px 22px;font-family:var(--fn);font-size:10px;color:var(--ink-mid);letter-spacing:.03em}
+.context-note strong{color:var(--ink)}
 .legend{background:var(--paper);border-bottom:1px solid var(--rule);padding:7px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .li{display:flex;align-items:center;gap:5px;font-family:var(--fn);font-size:9px;color:var(--ink-mid)}
 .ls{width:11px;height:11px;border-radius:50%;border:1.5px solid;flex-shrink:0}
@@ -79,6 +90,7 @@ table.p tr:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
   .plot-area{order:1}
   .title-block{flex-direction:column;align-items:flex-start;padding:10px 16px}
   .title-meta{text-align:left}
+  .context-note{padding:7px 16px}
   .legend{padding:6px 16px;gap:10px}
   .patch-section{margin:0 16px 24px}
 }
@@ -102,21 +114,23 @@ table.p tr:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
 <div class="title-block">
   <div>
     <div class="title-main">Lansdowne Theatre — <em>Lighting Plot</em></div>
-    <div class="title-sub">Verified patch · grandMA2 · sACN · 5 Universes · 31 N. Lansdowne Ave, Lansdowne PA</div>
+    <div class="title-sub">Verified patch · grandMA2 · sACN · 5 Universes · 2 electrified trusses · 31 N. Lansdowne Ave, Lansdowne PA</div>
   </div>
   <div class="title-meta">
     Console <span>grandMA2</span> &nbsp;·&nbsp; Protocol <span>sACN</span><br>
     Total fixtures <span>51</span> &nbsp;·&nbsp; Universes <span>1–5</span><br>
-    Click any fixture to inspect
+    Only <span>US2</span> and <span>FOH</span> carry electrics
   </div>
 </div>
+
+<div class="context-note"><strong>Electrical layout:</strong> only two overhead positions are electrified in this plot: <strong>US2</strong> and <strong>FOH</strong>. <strong>US1</strong>, <strong>DS3</strong>, and <strong>DS4</strong> are empty non-electric pipes. <strong>U5</strong> is a separate FOH opposite / balcony-box position, not a third electrified truss.</div>
 
 <div class="legend">
   <div class="li"><div class="ls" style="background:var(--u1b);border-color:var(--u1c)"></div>U1 · Mac Aura 101–114 (US2)</div>
   <div class="li"><div class="ls" style="background:var(--u2b);border-color:var(--u2c)"></div>U2 · Viper Profile 301–306 (US2)</div>
   <div class="li"><div class="ls" style="background:var(--u3b);border-color:var(--u3c)"></div>U3 · Mac Aura 201–210 + Color Strike M (FOH)</div>
   <div class="li"><div class="ls" style="background:var(--u4b);border-color:var(--u4c)"></div>U4 · Viper 401–414 (FOH)</div>
-  <div class="li"><div class="lsq" style="background:var(--u5b);border-color:var(--u5c)"></div>U5 · Source 4WRD + Relay</div>
+  <div class="li"><div class="lsq" style="background:var(--u5b);border-color:var(--u5c)"></div>U5 · FOH Opposite / Balcony Box · Source 4WRD + Relay</div>
   <div class="ldiv"></div>
   <div class="li">⊕ Wash &nbsp;⦿ Spot &nbsp;▭ Blinder &nbsp;◇ FOH Opp.</div>
 </div>
@@ -222,17 +236,17 @@ e('text',{x:785,y:243,'text-anchor':'middle','font-family':'var(--fn)','font-siz
 e('rect',{x:55,y:48,width:714,height:12,fill:'#B8A878',stroke:'#7B6A40','stroke-width':'2',rx:'3'},svg);
 e('text',{x:410,y:42,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8.5',fill:'#5C3800','font-weight':'500'},svg).textContent='US2 \u2014 U1: 14\u00D7 Mac Aura (101\u2013114) + U2: 6\u00D7 Viper Profile (301\u2013306)';
 
-// US1 banner pipe (dashed, empty)
+// US1 banner pipe (dashed, empty non-electric)
 e('rect',{x:55,y:148,width:714,height:10,fill:'#DDD4B4',stroke:'#A8966A','stroke-width':'1.5',rx:'3','stroke-dasharray':'8 4'},svg);
-e('text',{x:410,y:143,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:'#9B8560'},svg).textContent='US1 \u2014 Banner Pipe \u2014 Empty';
+e('text',{x:410,y:143,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:'#9B8560'},svg).textContent='US1 \u2014 Banner Pipe \u2014 Empty / Non-Electric';
 
-// DS3 empty
+// DS3 empty non-electric
 e('rect',{x:55,y:238,width:714,height:10,fill:'#DDD4B4',stroke:'#A8966A','stroke-width':'1.2',rx:'3','stroke-dasharray':'8 4'},svg);
-e('text',{x:410,y:233,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:'#9B8560'},svg).textContent='DS3 \u2014 Empty';
+e('text',{x:410,y:233,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:'#9B8560'},svg).textContent='DS3 \u2014 Empty / Non-Electric';
 
-// DS4 empty
+// DS4 empty non-electric
 e('rect',{x:55,y:338,width:714,height:10,fill:'#DDD4B4',stroke:'#A8966A','stroke-width':'1.2',rx:'3','stroke-dasharray':'8 4'},svg);
-e('text',{x:410,y:333,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:'#9B8560'},svg).textContent='DS4 \u2014 Empty';
+e('text',{x:410,y:333,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:'#9B8560'},svg).textContent='DS4 \u2014 Empty / Non-Electric';
 
 // Proscenium
 e('rect',{x:50,y:448,width:720,height:18,fill:'#A09070',stroke:'#1C1408','stroke-width':'2'},svg);
@@ -247,9 +261,9 @@ e('text',{x:410,y:480,'text-anchor':'middle','font-family':'var(--fn)','font-siz
 e('line',{x1:58,y1:518,x2:762,y2:518,stroke:'#7B6A40','stroke-width':'2.5'},svg);
 e('text',{x:410,y:512,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8.5',fill:'#3A0000','font-weight':'500'},svg).textContent='FOH Pipe \u2014 U3: 10\u00D7 Mac Aura (201\u2013210) + U4: 14\u00D7 Viper (401\u2013414) + 4\u00D7 Color Strike M (501\u2013504)';
 
-// FOH Opposite
+// FOH Opposite accessory position
 e('rect',{x:50,y:706,width:720,height:14,fill:'#C8B888',stroke:'#1C1408','stroke-width':'1.5'},svg);
-e('text',{x:410,y:717,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:'#3A1A5C','letter-spacing':'0.08em'},svg).textContent='FOH OPPOSITE \u2014 BALCONY / BOX \u2014 U5';
+e('text',{x:410,y:717,'text-anchor':'middle','font-family':'var(--fn)','font-size':'8',fill:'#3A1A5C','letter-spacing':'0.08em'},svg).textContent='FOH OPPOSITE / BALCONY BOX \u2014 U5 ACCESSORY POSITION';
 
 // ── DRAW FIXTURES ──
 var sel=null,selIdx=-1;

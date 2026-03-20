@@ -20,7 +20,6 @@
   --u3c:#1A4A8B;--u3b:rgba(26,74,139,0.15);
   --u4c:#1A6B1A;--u4b:rgba(26,107,26,0.15);
   --u5c:#5C2A7A;--u5b:rgba(92,42,122,0.15);
-  --csc:#1A4A8B;--csb:rgba(26,74,139,0.15);
   --fn:'DM Mono',monospace;--fb:'DM Sans',sans-serif;--fd:'Playfair Display',serif;
 }
 body{background:var(--paper-dark);color:var(--ink);font-family:var(--fb);font-size:13px}
@@ -138,10 +137,10 @@ table.p tr:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
 </div>
 
 <div class="legend">
-  <div class="li"><div class="ls" style="background:var(--u1b);border-color:var(--u1c)"></div>U1 &middot; Truss 1 &middot; Mac Aura 101&ndash;114</div>
-  <div class="li"><div class="ls" style="background:var(--u3b);border-color:var(--u3c)"></div>U2 &middot; Truss 2 &middot; Viper 301&ndash;306</div>
-  <div class="li"><div class="ls" style="background:var(--u2b);border-color:var(--u2c)"></div>U3 &middot; Truss 3 &middot; Mac Aura 201&ndash;210 + Color Strike M</div>
-  <div class="li"><div class="ls" style="background:var(--u4b);border-color:var(--u4c)"></div>U4 &middot; Truss 4 &middot; Viper 401&ndash;414</div>
+  <div class="li"><div class="ls" style="background:var(--u1b);border-color:var(--u1c)"></div>U1 &middot; Truss 1 &middot; 14&times; Mac Aura</div>
+  <div class="li"><div class="ls" style="background:var(--u2b);border-color:var(--u2c)"></div>U2 &middot; Truss 2 &middot; 6&times; Viper Profile</div>
+  <div class="li"><div class="ls" style="background:var(--u3b);border-color:var(--u3c)"></div>U3 &middot; Truss 3 &middot; 10&times; Mac Aura + 4&times; Color Strike M</div>
+  <div class="li"><div class="ls" style="background:var(--u4b);border-color:var(--u4c)"></div>U4 &middot; Truss 4 &middot; 14&times; Viper Profile</div>
   <div class="li"><div class="lsq" style="background:var(--u5b);border-color:var(--u5c)"></div>U5 &middot; Truss 5 &middot; Source 4WRD + Dimmer</div>
   <div class="ldiv"></div>
   <div class="li">&oplus; Wash &nbsp;&bull; Spot &nbsp;&#9645; Blinder &nbsp;&loz; Source</div>
@@ -176,8 +175,7 @@ var UC = {
   2:{c:'#8B1A1A',b:'rgba(139,26,26,0.16)',t:'#6B0A0A',lbl:'U2'},
   3:{c:'#1A4A8B',b:'rgba(26,74,139,0.16)',t:'#0D2A5C',lbl:'U3'},
   4:{c:'#1A6B1A',b:'rgba(26,107,26,0.16)',t:'#0A4A0A',lbl:'U4'},
-  5:{c:'#5C2A7A',b:'rgba(92,42,122,0.16)',t:'#3A1A5C',lbl:'U5'},
-  cs:{c:'#1A4A8B',b:'rgba(26,74,139,0.16)',t:'#0D2A5C',lbl:'U4'}
+  5:{c:'#5C2A7A',b:'rgba(92,42,122,0.16)',t:'#3A1A5C',lbl:'U5'}
 };
 
 // Escape HTML
@@ -208,23 +206,23 @@ spread(14).forEach(function(x, i) {
     pos:'Truss 1 (Upstage)', x:x, y:70, notes:''});
 });
 
-// TRUSS 2 (Upstage) — U2 — 6x Mac Viper Profile, 34ch
+// TRUSS 2 (Upstage) — U2 — 6x Mac Viper Profile, 34ch — addr 2.xxx
 spread(6).forEach(function(x, i) {
-  F.push({id:'MVP16E '+(i+1), ch:String(301+i), type:'Mac Viper Profile', sym:'spot', uni:3,
+  F.push({id:'MVP16E '+(i+1), ch:String(301+i), type:'Mac Viper Profile', sym:'spot', uni:2,
     addr:'2.'+String(1+i*34).padStart(3,'0'), mode:'34 CH (Extended, 16-bit)',
     pos:'Truss 2 (Upstage)', x:x, y:118, notes:''});
 });
 
-// TRUSS 3 (Downstage) — U3 — 10x Mac Aura, 25ch
+// TRUSS 3 (Downstage) — U3 — 10x Mac Aura, 25ch — addr 3.xxx
 spread(10).forEach(function(x, i) {
-  F.push({id:'MAuraExN '+(i+1), ch:(201+i)+'.1', type:'Mac Aura', sym:'wash', uni:2,
+  F.push({id:'MAuraExN '+(i+1), ch:(201+i)+'.1', type:'Mac Aura', sym:'wash', uni:3,
     addr:'3.'+String(1+i*25).padStart(3,'0'), mode:'25 CH (Extended, Colour Cal On)',
     pos:'Truss 3 (Downstage)', x:x, y:548, notes:''});
 });
 
-// TRUSS 3 (Downstage) — U3 — 4x Color Strike M, 30ch
+// TRUSS 3 (Downstage) — U3 — 4x Color Strike M, 30ch — addr 3.xxx
 spread(4).forEach(function(x, i) {
-  F.push({id:'Color Strike M '+(i+1), ch:(501+i)+'.1', type:'Color Strike M', sym:'cyc', uni:'cs',
+  F.push({id:'Color Strike M '+(i+1), ch:(501+i)+'.1', type:'Color Strike M', sym:'cyc', uni:3,
     addr:'3.'+String(251+i*30).padStart(3,'0'), mode:'30 CH',
     pos:'Truss 3 (Downstage)', x:x, y:608, notes:'Audience-facing blinder. Shares Truss 3 with Mac Auras.'});
 });
@@ -445,9 +443,9 @@ document.addEventListener('keydown', function(ev) {
 // ── PATCH TABLE ──
 var sections = [
   {label:'Truss 1 (Upstage) \u2014 U1 \u2014 14\u00D7 Mac Aura (101\u2013114)', filter:function(f){return f.uni===1;}},
-  {label:'Truss 2 (Upstage) \u2014 U2 \u2014 6\u00D7 Mac Viper Profile (301\u2013306)', filter:function(f){return f.uni===3;}},
-  {label:'Truss 3 (Downstage) \u2014 U3 \u2014 10\u00D7 Mac Aura (201\u2013210)', filter:function(f){return f.uni===2;}},
-  {label:'Truss 3 (Downstage) \u2014 U3 \u2014 4\u00D7 Color Strike M (501\u2013504)', filter:function(f){return f.uni==='cs';}},
+  {label:'Truss 2 (Upstage) \u2014 U2 \u2014 6\u00D7 Mac Viper Profile (301\u2013306)', filter:function(f){return f.uni===2;}},
+  {label:'Truss 3 (Downstage) \u2014 U3 \u2014 10\u00D7 Mac Aura (201\u2013210)', filter:function(f){return f.uni===3&&f.sym==='wash';}},
+  {label:'Truss 3 (Downstage) \u2014 U3 \u2014 4\u00D7 Color Strike M (501\u2013504)', filter:function(f){return f.uni===3&&f.sym==='cyc';}},
   {label:'Truss 4 (Downstage) \u2014 U4 \u2014 14\u00D7 Mac Viper Profile (401\u2013414)', filter:function(f){return f.uni===4;}},
   {label:'Truss 5 \u2014 U5 \u2014 Source 4WRD + Dimmer', filter:function(f){return f.uni===5;}}
 ];

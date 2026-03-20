@@ -169,16 +169,18 @@ var UC={
 function spread(n,x0,x1){x0=x0||62;x1=x1||758;if(n===1)return[Math.round((x0+x1)/2)];var g=(x1-x0)/(n-1);return Array.from({length:n},function(_,i){return Math.round(x0+i*g)});}
 
 var F=[];
+var us2AuraSlots=spread(14);
+var us2ViperSlots=spread(6,us2AuraSlots[1],us2AuraSlots[12]);
 
 // US2 — U1 — 14× Mac Aura — addr 1.xxx
-spread(14).forEach(function(x,i){
+us2AuraSlots.forEach(function(x,i){
   F.push({id:'MAuraExN '+(i+1),ch:(101+i)+'.1',type:'Mac Aura',sym:'wash',uni:1,
     addr:'1.'+String(1+i*25).padStart(3,'0'),mode:'25 CH (Extended, Colour Cal On)',
     pos:'US2 Pipe',x:x,y:164,notes:''});
 });
 
-// US2 — U2 — 6× Viper Profile — addr 2.xxx
-spread(6).forEach(function(x,i){
+// US2 — U2 — 6× Viper Profile — addr 2.xxx, gathered between 102 and 113
+us2ViperSlots.forEach(function(x,i){
   F.push({id:'MVP16E '+(i+1),ch:String(301+i),type:'Mac Viper Profile',sym:'spot',uni:2,
     addr:'2.'+String(1+i*34).padStart(3,'0'),mode:'34 CH (Extended, 16-bit)',
     pos:'US2 Pipe',x:x,y:202,notes:''});

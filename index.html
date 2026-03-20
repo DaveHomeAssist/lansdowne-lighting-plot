@@ -48,7 +48,7 @@ body{background:var(--paper-dark);color:var(--ink);font-family:var(--fb);font-si
 .plot-wrap{padding:10px 14px;display:flex;gap:12px;align-items:flex-start}
 .plot-area{flex:1;min-width:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .orient{display:flex;justify-content:space-between;font-family:var(--fn);font-size:8px;color:var(--ink-light);letter-spacing:.05em;text-transform:uppercase;margin-bottom:2px;padding:0 2px}
-svg#plot{width:100%;min-width:580px;display:block;cursor:crosshair}
+svg#plot{width:100%;min-width:580px;max-height:calc(100vh - 160px);display:block;cursor:crosshair}
 .fixture-group{cursor:pointer}
 .fixture-group:hover .fb{opacity:0.65}
 .fixture-group.sel .fb{opacity:0.5}
@@ -93,6 +93,7 @@ table.p tr:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
   .context-note{padding:6px 14px}
   .legend{padding:5px 14px;gap:8px}
   .patch-section{margin:0 14px 18px}
+  svg#plot{max-height:calc(100vh - 120px)}
 }
 @media(max-width:600px){
   .title-main{font-size:16px}

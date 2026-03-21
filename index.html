@@ -117,13 +117,17 @@ table.p tr:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
   table.p th,table.p td{padding:2px 5px}
   svg#plot{max-height:390px;min-width:0}
 }
+.skip-link { position:absolute; left:-9999px; top:auto; padding:8px 16px; z-index:10000; background:#222; color:#fff; text-decoration:none; border-radius:4px; font-size:14px; }
+.skip-link:focus { left:10px; top:10px; }
 </style>
 </head>
 <body>
+<a href="#main" class="skip-link">Skip to content</a>
 
+<header aria-label="Site header">
 <div class="title-block">
   <div>
-    <div class="title-main">Lansdowne Theatre — <em>Lighting Plot</em></div>
+    <h1 class="title-main">Lansdowne Theatre — <em>Lighting Plot</em></h1>
     <div class="title-sub">Verified patch · grandMA2 · sACN · 5 Universes · 2 electrified trusses · 31 N. Lansdowne Ave, Lansdowne PA</div>
   </div>
   <div class="title-meta">
@@ -132,6 +136,7 @@ table.p tr:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
     Only <span>US2</span> and <span>FOH</span> carry electrics
   </div>
 </div>
+</header>
 
 <div class="context-note"><strong>Electrical layout:</strong> only two overhead positions are electrified in this plot: <strong>US2</strong> and <strong>FOH</strong>. <strong>US1</strong>, <strong>DS3</strong>, and <strong>DS4</strong> are empty non-electric pipes. <strong>U5</strong> is a separate FOH opposite / balcony-box position, not a third electrified truss.</div>
 
@@ -145,6 +150,7 @@ table.p tr:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
   <div class="li">⊕ Wash &nbsp;⦿ Spot &nbsp;▭ Blinder &nbsp;◇ FOH Opp.</div>
 </div>
 
+<main id="main">
 <div class="plot-wrap">
   <div class="plot-area">
     <div class="orient"><span>← Stage Right (SR)</span><span>↑ Upstage</span><span>Stage Left (SL) →</span></div>
@@ -158,7 +164,7 @@ table.p tr:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
 </div>
 
 <div class="patch-section">
-  <div class="pt">Full Patch — Verified from Master Patch Sheet</div>
+  <h2 class="pt">Full Patch — Verified from Master Patch Sheet</h2>
   <div class="patch-scroll">
     <table class="p">
       <thead><tr><th>CH</th><th>Fixture Name</th><th>Type</th><th>Uni</th><th>DMX Addr</th><th>Mode</th><th>Position</th></tr></thead>
@@ -166,6 +172,11 @@ table.p tr:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
     </table>
   </div>
 </div>
+</main>
+
+<footer style="padding:8px 16px;font-family:var(--fn);font-size:10px;color:var(--ink-light);text-align:center;border-top:1px solid var(--rule);background:var(--paper)">
+  Lansdowne Theatre Lighting Plot &mdash; grandMA2 &middot; sACN &middot; 5 Universes &middot; 51 fixtures &mdash; 31 N. Lansdowne Ave, Lansdowne PA
+</footer>
 
 <script>
 var UC={
@@ -390,7 +401,10 @@ secs.forEach(function(sec){
     var c5=document.createElement('td');c5.className='m';c5.style.color=u.c;c5.textContent=f.addr;tr.appendChild(c5);
     var c6=document.createElement('td');c6.className='mt';c6.textContent=f.mode;tr.appendChild(c6);
     var c7=document.createElement('td');c7.className='mt';c7.textContent=f.pos;tr.appendChild(c7);
+    tr.setAttribute('tabindex','0');
+    tr.setAttribute('role','button');
     tr.addEventListener('click',function(){setSelected(groups[gi],gi);inspect(f);document.getElementById('plot').scrollIntoView({behavior:'smooth',block:'start'});});
+    tr.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();setSelected(groups[gi],gi);inspect(f);document.getElementById('plot').scrollIntoView({behavior:'smooth',block:'start'});}});
     tbody.appendChild(tr);
   });
 });
